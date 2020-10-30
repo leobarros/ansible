@@ -2,4 +2,5 @@
   # example of playbooks
   - hosts: all
     tasks:
-      - command: hostname
+      - name: get server hostname
+        command: hostname
