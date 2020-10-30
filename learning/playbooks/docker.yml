@@ -1,0 +1,6 @@
+---
+  # example of playbooks
+  - hosts: docker
+    tasks:
+      - name: get server hostname
+        command: hostname
