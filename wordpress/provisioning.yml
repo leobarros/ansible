@@ -1,4 +1,8 @@
 ---
 - hosts: all
   tasks:
-    - shell: 'echo hello > world.txt'
+    - name: 'Install PHP7'
+      apt:
+        name: php7.4
+        state: latest
+      become: yes
