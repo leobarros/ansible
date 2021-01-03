@@ -1,18 +1,9 @@
 ---
 - hosts: all
   tasks:
-    - name: 'Install PHP7'
+    - name: 'Install packages'
       apt:
-        name: php7.4
-        state: latest
-      become: yes
-    - name: 'Install Apache 2'
-      apt:
-        name: apache2
-        state: latest
-      become: yes
-    - name: 'Install modphp'
-      apt:
-        name: libapache2-mod-php7.4
+        name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
+        'php-intl', 'php-zip', 'apache2', 'mysql-server']
         state: latest
       become: yes
