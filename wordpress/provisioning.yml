@@ -6,3 +6,13 @@
         name: php7.4
         state: latest
       become: yes
+    - name: 'Install Apache 2'
+      apt:
+        name: apache2
+        state: latest
+      become: yes
+    - name: 'Install modphp'
+      apt:
+        name: libapache2-mod-php7.4
+        state: latest
+      become: yes
