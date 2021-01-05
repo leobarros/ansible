@@ -4,6 +4,13 @@
     - name: 'Install packages'
       apt:
         name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
-        'php-intl', 'php-zip', 'apache2', 'mysql-server']
+        'php-intl', 'php-zip', 'apache2', 'python3-mysqldb', 'mysql-server']
         state: latest
+      become: yes
+
+    - name: 'Creating database MySQL'
+      mysql_db:
+        name: wordpress_db
+        login_user: root
+        state: present
       become: yes
