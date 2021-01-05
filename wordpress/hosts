@@ -1,2 +1,2 @@
 [wordpress]
-172.17.161.139
+192.168.11.52 ansible_user=ubuntu
