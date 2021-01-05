@@ -14,3 +14,12 @@
         login_user: root
         state: present
       become: yes
+
+    - name: 'Creating a user into the database'
+      mysql_user:
+        login_user: root
+        name: wordpress_user
+        password: 12345
+        priv: 'wordpress_db.*:ALL'
+        state: present
+      become: yes
