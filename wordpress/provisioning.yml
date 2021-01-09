@@ -4,6 +4,14 @@
     db_name: 'wordpress_db'
     db_user: 'wordpress_user'
     db_password: '12345' #do not use in production
+    wordpress_path: '/var/www/wordpress'
+
+  handlers:
+    - name: restating apache daemon
+      service:
+        name: apache2
+        state: restarted
+      become: yes
 
   tasks:
     - name: 'Install packages'
@@ -46,3 +54,11 @@
         src: wp-config.j2
         dest: /var/www/wordpress/wp-config.php
       become: yes
+
+    - name: 'Apache serving the wordpress'
+      template:
+        src: 000-default.j2
+        dest: /etc/apache2/sites-enabled/000-default.conf
+      become: yes
+      notify:
+        - restating apache daemon
