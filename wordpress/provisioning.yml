@@ -1,5 +1,10 @@
 ---
 - hosts: all
+  vars:
+    db_name: 'wordpress_db'
+    db_user: 'wordpress_user'
+    db_password: '12345' #do not use in production
+
   tasks:
     - name: 'Install packages'
       apt:
@@ -18,8 +23,8 @@
     - name: 'Creating a user into the database'
       mysql_user:
         login_user: root
-        name: wordpress_user
-        password: 12345
+        name: "{{ db_name }}"
+        password: "{{ db_password }}"
         priv: 'wordpress_db.*:ALL'
         state: present
       become: yes
@@ -34,4 +39,10 @@
         src: '/tmp/wordpress.tar.gz'
         dest: '/var/www/'
         remote_src: yes
+      become: yes
+    
+    - name: 'Creating the wp-config file in the server with template'
+      template:
+        src: wp-config.j2
+        dest: /var/www/wordpress/wp-config.php
       become: yes
