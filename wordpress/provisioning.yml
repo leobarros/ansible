@@ -1,23 +1,14 @@
 ---
-- hosts: all
+- hosts: database
   vars:
     db_name: 'wordpress_db'
     db_user: 'wordpress_user'
     db_password: '12345' #do not use in production
-    wordpress_path: '/var/www/wordpress'
-
-  handlers:
-    - name: restating apache daemon
-      service:
-        name: apache2
-        state: restarted
-      become: yes
 
   tasks:
-    - name: 'Install packages'
+    - name: 'Install mysql'
       apt:
-        name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
-        'php-intl', 'php-zip', 'apache2', 'python3-mysqldb', 'mysql-server']
+        name: ['python3-mysqldb', 'mysql-server']
         state: latest
       become: yes
 
@@ -36,7 +27,29 @@
         priv: 'wordpress_db.*:ALL'
         state: present
       become: yes
-    
+  
+- hosts: wordpress
+  vars:
+    db_name: 'wordpress_db'
+    db_user: 'wordpress_user'
+    db_password: '12345' #do not use in production
+    wordpress_path: '/var/www/wordpress/'
+
+  handlers:
+    - name: restating apache daemon
+      service:
+        name: apache2
+        state: restarted
+      become: yes
+
+  tasks:
+    - name: 'Install packages'
+      apt:
+        name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
+        'php-intl', 'php-zip', 'apache2']
+        state: latest
+      become: yes
+
     - name: 'Download wordpress'
       get_url:
         url: https://wordpress.org/latest.tar.gz'
