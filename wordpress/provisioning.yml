@@ -1,5 +1,12 @@
 ---
 - hosts: database
+  handlers:
+    - name: restart mysql
+      service: 
+        name: mysql
+        state: restarted
+      become: yes
+
   vars:
     db_name: 'wordpress_db'
     db_user: 'wordpress_user'
@@ -26,13 +33,27 @@
         password: "{{ db_password }}"
         priv: 'wordpress_db.*:ALL'
         state: present
+        host: "{{ item }}"
+      with_items:
+        - 'localhost'
+        - '127.0.0.1'
+        - '172.18.19.73' # ip mysql server
       become: yes
+    
+    - name: 'MySQL config files'
+      template:
+        src: my.j2
+        dest: /etc/mysql/my.cnf
+      become: yes
+      notify:
+        - restart mysql
   
 - hosts: wordpress
   vars:
     db_name: 'wordpress_db'
     db_user: 'wordpress_user'
     db_password: '12345' #do not use in production
+    localhost: '172.18.19.73' # ip mysql server
     wordpress_path: '/var/www/wordpress/'
 
   handlers:
