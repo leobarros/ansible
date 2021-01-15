@@ -1,0 +1,5 @@
+---
+db_name: 'wordpress_db'
+db_user: 'wordpress_user'
+db_password: '12345' #do not use in production
+db_ip: '172.18.19.73' # ip mysql server

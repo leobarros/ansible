@@ -7,11 +7,6 @@
         state: restarted
       become: yes
 
-  vars:
-    db_name: 'wordpress_db'
-    db_user: 'wordpress_user'
-    db_password: '12345' #do not use in production
-
   tasks:
     - name: 'Install mysql'
       apt:
@@ -37,7 +32,7 @@
       with_items:
         - 'localhost'
         - '127.0.0.1'
-        - '172.18.19.73' # ip mysql server
+        - "{{ db_ip }}" # ip mysql server
       become: yes
     
     - name: 'MySQL config files'
@@ -49,12 +44,6 @@
         - restart mysql
   
 - hosts: wordpress
-  vars:
-    db_name: 'wordpress_db'
-    db_user: 'wordpress_user'
-    db_password: '12345' #do not use in production
-    localhost: '172.18.19.73' # ip mysql server
-    wordpress_path: '/var/www/wordpress/'
 
   handlers:
     - name: restating apache daemon
@@ -66,8 +55,9 @@
   tasks:
     - name: 'Install packages'
       apt:
-        name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
-        'php-intl', 'php-zip', 'apache2']
+        name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 
+               'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
+               'php-intl', 'php-zip', 'apache2']
         state: latest
       become: yes
 
@@ -86,7 +76,7 @@
     - name: 'Creating the wp-config file in the server with template'
       template:
         src: wp-config.j2
-        dest: /var/www/wordpress/wp-config.php
+        dest: "{{ wp_path_server }}wp-config.php"
       become: yes
 
     - name: 'Apache serving the wordpress'
