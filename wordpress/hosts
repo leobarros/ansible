@@ -1,5 +1,5 @@
 [wordpress]
-10.85.13.90 ansible_user=ubuntu
+172.17.155.131 ansible_user=ubuntu
 
 [database]
-10.85.13.154 ansible_user=ubuntu
+172.17.155.134 ansible_user=ubuntu

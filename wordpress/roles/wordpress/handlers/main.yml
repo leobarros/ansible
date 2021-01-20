@@ -1,0 +1,6 @@
+---
+- name: restating apache daemon
+  service:
+    name: apache2
+    state: restarted
+  become: yes
