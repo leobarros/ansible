@@ -1,8 +1,13 @@
 ---
-- name: 'Install packages'
+- name: 'Install packages for webserver'
   apt:
-    name: ['php', 'libapache2-mod-php', 'php-mysql', 'php-curl', 'php-gd', 
-              'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 
-              'php-intl', 'php-zip', 'apache2']
-    state: latest
+    name: [
+           "php5",
+           "apache2",
+           "libapache2-mod-php5",
+           "php5-gd",
+           "libssh2-php",
+           "php5-mcrypt",
+           "php5-mysql"
+    ]
   become: yes

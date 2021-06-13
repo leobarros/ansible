@@ -1,5 +1,5 @@
 [wordpress]
-#172.17.155.131 ansible_user=ubuntu
-172.17.177.40 ansible_user=vagrant
-#[database]
-#172.17.155.134 ansible_user=ubuntu
+172.17.177.40 ansible_user=vagrant ansible_python_interpreter=/usr/bin/python2  ansible_ssh_private_key_file=".vagrant/machines/wordpress/virtualbox/private_key"
+[database]
+172.17.177.42 ansible_user=vagrant ansible_python_interpreter=/usr/bin/python2 ansible_ssh_private_key_file=".vagrant/machines/wordpress/virtualbox/private_key"
+

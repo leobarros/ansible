@@ -1,13 +1,13 @@
 ---
 - name: 'Install mysql'
   apt:
-    name: ['python3-mysqldb', 'mysql-server']
+    name: ['python-mysqldb', 'mysql-server-5.6']
     state: latest
   become: yes
 
 - name: 'Creating database MySQL'
   mysql_db:
-    name: wordpress_db
+    name: "{{ db_name }}"
     login_user: root
     state: present
   become: yes
@@ -17,15 +17,13 @@
     login_user: root
     name: "{{ db_name }}"
     password: "{{ db_password }}"
-    priv: 'wordpress_db.*:ALL'
+    priv: '{{ db_name }}.*:ALL'
     state: present
     host: "{{ item }}"
   with_items:
-    - 'localhost'
-    - '127.0.0.1'
     - "{{ db_ip }}" # ip mysql server
   become: yes
-  
+
 - name: 'MySQL config files'
   template:
     src: templates/my.cnf.j2

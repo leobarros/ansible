@@ -3,23 +3,31 @@
   get_url:
     url: https://wordpress.org/latest.tar.gz'
     dest: '/tmp/wordpress.tar.gz'
-  
+
 - name: 'Unzip the wordpress'
   unarchive:
     src: '/tmp/wordpress.tar.gz'
     dest: '/var/www/'
     remote_src: yes
   become: yes
-  
+
 - name: 'Creating the wp-config file in the server with template'
+  vars:
+    db_name: 'wordpress_db'
+    db_user: 'wordpress_user'
+    db_password: '12345' #do not use in production
+    db_ip: '172.17.177.42' # ip mysql server
+    wp_path_server: '/var/www/wordpress'
   template:
-    src: wp-config.j2
+    src: templates/wp-config.j2
     dest: /var/www/wordpress/wp-config.php
   become: yes
 
 - name: 'Apache serving the wordpress'
+  vars:
+    wp_path_server: '/var/www/wordpress'
   template:
-    src: 000-default.j2
+    src: templates/000-default.j2
     dest: /etc/apache2/sites-enabled/000-default.conf
   become: yes
   notify:
